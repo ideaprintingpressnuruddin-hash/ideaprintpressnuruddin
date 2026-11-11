@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="bn" data-lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173b72">
+<title>IDEA Printing Press ERP</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --text:#182230; --muted:#6b7280;
+  --primary:#173b72; --primary2:#2459a6; --accent:#f4b400;
+  --green:#138a5b; --red:#d64545; --orange:#e88900; --border:#e7ebf1;
+  --sidebar:270px;
+  /* compatibility aliases for main.mjs-rendered markup */
+  --dark:#173b72; --light:#edf3ff; --line:#e7ebf1; --gold:#a46a00;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,"Noto Sans Bengali",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:600;transition:background .15s}
+button:hover{background:var(--primary2)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--primary2);outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.secondary{background:#eef3fa;color:var(--primary)}
+.secondary:hover{background:#dde8f7}
+.danger{background:#fff0f0;color:var(--red)}
+.danger:hover{background:#ffe1e1}
+.small{font-size:12px;padding:7px 10px}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+.bn,.en{display:inline}
+html[data-lang="bn"] .en{display:none!important}
+html[data-lang="en"] .bn{display:none!important}
+
+/* ===== layout ===== */
+.layout{display:flex;min-height:100vh}
+aside{width:var(--sidebar);background:linear-gradient(180deg,#102d58,#173b72);color:#fff;position:fixed;inset:0 auto 0 0;padding:20px 14px;overflow:auto;z-index:20;display:flex;flex-direction:column}
+.brandbox{display:flex;gap:12px;align-items:center;padding:8px 10px 20px;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:6px}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#f4b400,#ffe08a);display:grid;place-items:center;color:#173b72;font-weight:900;font-size:21px;flex:none}
+.brandbox b{display:block;font-size:16px;line-height:1.25}
+.brandbox small{color:#c9d7ec;font-size:11px}
+#nav{flex:1}
+.navgroup{font-size:10px;letter-spacing:1.2px;color:#9fb4d1;padding:18px 12px 8px;text-transform:uppercase}
+.nav{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;color:#d9e5f5;padding:12px;border-radius:10px;margin:3px 0;font-weight:500;font-size:14px}
+.nav:hover{background:rgba(255,255,255,.12);color:#fff}
+.nav.active{background:#fff;color:var(--primary);font-weight:700}
+#logout{margin-top:14px;border-top:1px solid rgba(255,255,255,.13);border-radius:0 0 10px 10px;padding-top:16px}
+.sidebar-foot{color:#b7c7df;font-size:11px;padding:14px 10px 4px;line-height:1.7}
+.mainwrap{margin-left:var(--sidebar);width:calc(100% - var(--sidebar));min-width:0}
+.topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:10;gap:12px}
+.top-left{display:flex;align-items:center;gap:14px;min-width:0}
+.hamb{display:none;background:#eef3fa;color:var(--primary);border-radius:10px;width:42px;height:42px;padding:0;font-size:20px}
+.hamb:hover{background:#dde8f7}
+.top-title h1{font-size:20px;margin:0;line-height:1.2}
+.top-title p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.top-right{display:flex;align-items:center;gap:12px}
+.pill{border-radius:30px;background:#edf8f3;color:var(--green);padding:7px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.lang{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fafcff}
+.lang button{background:transparent;color:var(--muted);border-radius:0;padding:8px 12px;font-size:12px;font-weight:700}
+.lang button:hover{background:#eef3fa}
+.lang button.on{background:var(--primary);color:#fff}
+.main{padding:28px;max-width:1600px;width:100%;margin:auto}
+.notice{padding:13px 16px;background:#fff7e7;color:#78591c;border:1px solid #efdda9;border-radius:12px;line-height:1.7;margin:0 0 18px;font-size:13px}
+
+/* ===== cards & panels ===== */
+.panel,.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:16px 0;box-shadow:0 4px 16px rgba(20,45,80,.035)}
+.panel h2{font-size:16px;margin:0 0 16px}
+.panel h3{font-size:14px;margin:18px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:16px 0}
+.card{margin:0;padding:18px}
+.card .k{color:var(--muted);font-size:12px;font-weight:600}
+.card strong{font-size:25px;font-weight:800;display:block;margin:12px 0 6px;color:var(--text)}
+.card small{color:var(--green);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+
+/* ===== forms ===== */
+.form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.form label,.login label{display:block;font-size:12px;color:#506070;font-weight:600}
+.form input,.form select,.form textarea,.login input{width:100%;border:1px solid #d7e0ec;background:#fff;border-radius:9px;padding:10px 11px;margin-top:6px;min-width:0;color:var(--text);font-weight:400}
+.form input:focus,.form select:focus,.form textarea:focus,.login input:focus{border-color:var(--primary2)}
+.form textarea{min-height:72px;resize:vertical}
+.actions{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ===== tables ===== */
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
+th,td{text-align:left;padding:12px 8px;border-bottom:1px solid #edf0f4}
+th{color:var(--muted);font-weight:700;font-size:11px;border-bottom:1px solid var(--border);background:#fafcff}
+tr:hover td{background:#fafcff}
+.tag{display:inline-block;border-radius:20px;background:#eaf8f1;color:var(--green);padding:5px 9px;font-size:11px;font-weight:700}
+.warn{background:#fff5df;color:#a46a00}
+.bad{background:#fff0f0;color:var(--red)}
+.good{color:var(--green)}
+.status{white-space:pre-wrap;margin:12px 0;color:var(--red);line-height:1.6}
+.status.good{color:var(--green)}
+.empty{text-align:center;color:#8b97a6;padding:26px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.right{margin-left:auto}
+.maplink{color:var(--primary2)}
+.photo{width:58px;height:58px;object-fit:cover;border-radius:8px}
+.bar{height:8px;background:#e8eef7;border-radius:8px;overflow:hidden}
+.bar span{display:block;background:linear-gradient(90deg,#2f67bb,#173b72);height:100%}
+.subtle{font-size:12px;color:var(--muted);line-height:1.7}
+.footer{margin:28px 0 8px;color:#8b97a6;font-size:11px}
+
+/* ===== login ===== */
+.loginCover{position:fixed;inset:0;z-index:1000;background:linear-gradient(160deg,#102d58,#173b72 55%,#2459a6);display:grid;place-items:center;padding:20px;overflow:auto}
+.login{max-width:430px;width:100%;background:#fff;border-radius:18px;padding:30px;box-shadow:0 24px 70px rgba(10,25,55,.4);position:relative}
+.login .lang{position:absolute;top:16px;right:16px}
+.login .brandbox{border-bottom:0;padding:0 0 14px}
+.login .brandbox b{color:var(--primary)}
+.login .brandbox small{color:var(--muted)}
+.login h1{color:var(--text);font-size:23px;margin:6px 0 6px}
+.login label{margin:14px 0}
+.login button[type=submit]{width:100%;margin-top:8px;padding:12px}
+
+/* ===== responsive ===== */
+@media(max-width:1150px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.form{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:820px){
+  aside{transform:translateX(-100%);transition:transform .25s;width:270px}
+  aside.open{transform:translateX(0)}
+  .mainwrap{margin-left:0;width:100%}
+  .hamb{display:block}
+  .topbar{padding:0 14px}
+  .pill{display:none}
+  .main{padding:16px}
+  .top-title h1{font-size:16px}
+  .grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){.form{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.card strong{font-size:22px}}
+@media(prefers-reduced-motion:reduce){aside,button{transition:none}}
+</style>
+</head>
+<body>
+
+<div id="loginCover" class="loginCover">
+  <section class="login">
+    <div class="lang" data-langswitch><button type="button" data-set="bn">বাংলা</button><button type="button" data-set="en">EN</button></div>
+    <div class="brandbox"><div class="logo">IP</div><div><b>IDEA Printing Press</b><small>&amp; Publication ERP</small></div></div>
+    <h1><span class="bn">ERP-তে প্রবেশ করুন</span><span class="en">Sign in to ERP</span></h1>
+    <p class="muted"><span class="bn">মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন।</span><span class="en">Sign in with your mobile number and password.</span></p>
+    <form id="loginForm">
+      <label><span class="bn">মোবাইল নম্বর</span><span class="en">Mobile number</span><input id="phone" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="username" required></label>
+      <label><span class="bn">পাসওয়ার্ড</span><span class="en">Password</span><input id="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit"><span class="bn">লগইন</span><span class="en">Log in</span></button>
+    </form>
+    <div id="loginStatus" class="status">Firebase Realtime Database সংযোগ প্রস্তুত হচ্ছে…</div>
+    <p class="subtle"><span class="bn">কর্মীর অ্যাকাউন্ট আগে Firebase Authentication-এ তৈরি থাকতে হবে। মোবাইল নম্বরটি `01XXXXXXXXX@idea-press.example.com` ইমেইল হিসেবে ব্যবহৃত হয়।</span><span class="en">The staff account must already exist in Firebase Authentication. The mobile number is used as the email `01XXXXXXXXX@idea-press.example.com`.</span></p>
+  </section>
+</div>
+
+<div id="app" class="layout hidden">
+  <aside id="sidebar">
+    <div class="brandbox"><div class="logo">IP</div><div><b>IDEA Printing Press</b><small>&amp; Publication ERP</small></div></div>
+    <div id="nav"></div>
+    <button id="logout" class="nav" type="button">↪ <span class="bn">লগ আউট</span><span class="en">Log out</span></button>
+    <div class="sidebar-foot"><span class="bn">একটি Realtime Database · Spark পরিকল্পনা</span><span class="en">Single Realtime Database · Spark plan</span><br>© 2026 IDEA Printing Press &amp; Publication</div>
+  </aside>
+
+  <div class="mainwrap">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="hamb" id="hamb" type="button" aria-label="Menu">☰</button>
+        <div class="top-title"><h1 id="pageTitle">ড্যাশবোর্ড</h1><p id="identity"></p></div>
+      </div>
+      <div class="top-right">
+        <div class="lang" data-langswitch><button type="button" data-set="bn">বাংলা</button><button type="button" data-set="en">EN</button></div>
+        <span class="pill">Firebase Realtime Database</span>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="notice">
+        <span class="bn"><b>Operational ERP:</b> কর্মীরা হাজিরা, স্টক, ক্রয়, বিক্রয়, উৎপাদন, খরচ, ছুটি, হিসাব ও লাভ-ক্ষতির ডেটা ব্যবহার করতে পারবেন। কর্মী ব্যবস্থাপনা ও Master Data অ্যাডমিন নিয়ন্ত্রণ করবেন। লেনদেনের মূল রেকর্ড append-only রাখা হয়; ভুল সংশোধনে নতুন reversal/adjustment এন্ট্রি ব্যবহার করুন।</span>
+        <span class="en"><b>Operational ERP:</b> Staff can work with attendance, stock, purchase, sales, production, expense, leave, accounts and profit &amp; loss data. Admin controls staff management and master data. Original transaction records are append-only; to correct a mistake, add a new reversal/adjustment entry.</span>
+      </div>
+      <div id="page"></div>
+      <div id="globalStatus" class="status"></div>
+      <div class="footer"><span class="bn">IDEA PRINTING PRESS · Firebase Realtime Database · হিসাব ও মজুদ বাস্তব ব্যবহারের আগে মিলিয়ে নিন</span><span class="en">IDEA PRINTING PRESS · Firebase Realtime Database · Reconcile accounts and stock before live use</span></div>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ===== Bengali / English switch =====
+   Static text uses .bn/.en spans. Text rendered by main.mjs is translated at
+   runtime with the dictionary below (add more pairs as needed). */
+(function(){
+  var DICT = {
+    "ড্যাশবোর্ড":"Dashboard","হাজিরা":"Attendance","স্টক":"Stock","মজুদ":"Inventory","ক্রয়":"Purchase","বিক্রয়":"Sales",
+    "উৎপাদন":"Production","খরচ":"Expenses","ছুটি":"Leave","হিসাব":"Accounts","লাভ-ক্ষতি":"Profit & Loss",
+    "কর্মী ব্যবস্থাপনা":"Staff Management","কর্মী":"Staff","কর্মীরা":"Staff","রিপোর্ট":"Reports","সেটিংস":"Settings",
+    "মাস্টার ডেটা":"Master Data","পণ্য":"Products","পণ্যের নাম":"Product name","গ্রাহক":"Customers","সরবরাহকারী":"Suppliers",
+    "স্থান":"Location","তারিখ":"Date","পরিমাণ":"Quantity","দাম":"Price","মূল্য":"Value","মোট":"Total","টাকা":"Taka",
+    "নাম":"Name","মোবাইল":"Mobile","মোবাইল নম্বর":"Mobile number","পাসওয়ার্ড":"Password","ভূমিকা":"Role","অবস্থা":"Status",
+    "বিবরণ":"Description","মন্তব্য":"Notes","সংরক্ষণ":"Save","সংরক্ষণ করুন":"Save","জমা দিন":"Submit","বাতিল":"Cancel",
+    "মুছুন":"Delete","সম্পাদনা":"Edit","যোগ করুন":"Add","নতুন":"New","খুঁজুন":"Search","রিফ্রেশ":"Refresh",
+    "লোড হচ্ছে…":"Loading…","কোনো তথ্য নেই":"No data","সফল হয়েছে":"Success","ব্যর্থ":"Failed","সম্পন্ন":"Completed",
+    "অপেক্ষমাণ":"Pending","অনুমোদিত":"Approved","প্রত্যাখ্যাত":"Rejected","অনুমোদন":"Approval",
+    "কাঁচামাল":"Raw material","তৈরি পণ্য":"Finished goods","প্রক্রিয়াধীন":"Work in process","ট্রান্সফার":"Transfer",
+    "ক্যাশ":"Cash","নগদ":"Cash","বাকি":"Due","জমা":"Deposit","আয়":"Income","ব্যয়":"Expense","লাভ":"Profit","ক্ষতি":"Loss",
+    "আজকের":"Today's","মাসিক":"Monthly","বার্ষিক":"Yearly","বেতন":"Salary","এন্ট্রি":"Entry",
+    "লগ আউট":"Log out","লগইন":"Log in","স্বাগতম":"Welcome","প্রবেশ":"Sign in",
+    "Firebase Realtime Database সংযোগ প্রস্তুত হচ্ছে…":"Preparing Firebase Realtime Database connection…",
+    "ERP-তে প্রবেশ করুন":"Sign in to ERP"
+  };
+  var KEYS = Object.keys(DICT).sort(function(a,b){return b.length-a.length});
+  var lang = 'bn', store = new WeakMap();
+  try{ var s=localStorage.getItem('idea_lang'); if(s==='en'||s==='bn') lang=s; }catch(e){}
+
+  function tr(s){ var o=s; for(var i=0;i<KEYS.length;i++){ if(o.indexOf(KEYS[i])>-1) o=o.split(KEYS[i]).join(DICT[KEYS[i]]); } return o; }
+  function inStatic(n){ var p=n.parentNode; while(p&&p.nodeType===1){ if(p.classList&&(p.classList.contains('bn')||p.classList.contains('en'))) return true; if(p.tagName==='SCRIPT'||p.tagName==='STYLE') return true; p=p.parentNode;} return false; }
+  function text(n){
+    var v=n.nodeValue, r=store.get(n);
+    if(lang==='en'){
+      if(r&&v===r.t) return; if(!v.trim()||inStatic(n)) return;
+      var t=tr(v); if(t!==v){ store.set(n,{o:v,t:t}); n.nodeValue=t; }
+    } else if(r){ if(v===r.t) n.nodeValue=r.o; store.delete(n); }
+  }
+  function attrs(el){
+    if(!el.getAttribute) return;
+    ['placeholder','title'].forEach(function(a){
+      var k='data-o-'+a, v=el.getAttribute(a);
+      if(lang==='en'){ if(v&&!el.hasAttribute(k)){ var t=tr(v); if(t!==v){ el.setAttribute(k,v); el.setAttribute(a,t);} } }
+      else if(el.hasAttribute(k)){ el.setAttribute(a,el.getAttribute(k)); el.removeAttribute(k); }
+    });
+  }
+  function walk(root){
+    if(root.nodeType===3){ text(root); return; }
+    if(root.nodeType!==1) return;
+    attrs(root);
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_ALL,null), n;
+    while((n=w.nextNode())){ if(n.nodeType===3) text(n); else attrs(n); }
+  }
+  var mo=new MutationObserver(function(ms){
+    ms.forEach(function(m){
+      if(m.type==='characterData') text(m.target);
+      else m.addedNodes.forEach(walk);
+    });
+  });
+  function setLang(l){
+    lang=l; try{localStorage.setItem('idea_lang',l);}catch(e){}
+    document.documentElement.setAttribute('data-lang',l);
+    document.documentElement.lang=l;
+    document.title = l==='en' ? 'IDEA Printing Press ERP' : 'IDEA Printing Press ERP';
+    document.querySelectorAll('[data-langswitch] button').forEach(function(b){ b.classList.toggle('on',b.dataset.set===l); });
+    walk(document.body);
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-langswitch] button'); if(b){ setLang(b.dataset.set); return; }
+    if(e.target.closest&&e.target.closest('#hamb')){ document.getElementById('sidebar').classList.toggle('open'); return; }
+    if(e.target.closest&&e.target.closest('#nav button')){ document.getElementById('sidebar').classList.remove('open'); }
+  });
+  mo.observe(document.body,{childList:true,subtree:true,characterData:true});
+  setLang(lang);
+})();
+</script>
+<script type="module" src="./main.mjs"></script>
+</body>
+</html>
