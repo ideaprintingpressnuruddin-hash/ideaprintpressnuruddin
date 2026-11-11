@@ -1,0 +1,75 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "members": {
+      ".read": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2'",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || auth.uid === $uid)",
+        ".write": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && newData.exists()",
+        ".validate": "newData.hasChildren(['name', 'active', 'role', 'location']) && newData.child('name').isString() && newData.child('name').val().length > 0 && newData.child('name').val().length <= 100 && newData.child('active').isBoolean() && newData.child('role').isString() && newData.child('location').isString() && (( $uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && newData.child('role').val() === 'admin' && newData.child('location').val() === '') || ($uid !== 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && newData.child('role').val() === 'operational' && newData.child('location').val().length >= 2))"
+      }
+    },
+    "masters": {
+      ".read": "auth != null && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || (root.child('members').child(auth.uid).child('active').val() === true && root.child('members').child(auth.uid).child('role').val() === 'operational'))",
+      "$collection": {
+        "$item": {
+          ".write": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && newData.exists()",
+          ".validate": "newData.exists()"
+        }
+      }
+    },
+    "erp": {
+      "events": {
+        ".read": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2'",
+        "$location": {
+          ".read": "auth != null && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || (root.child('members').child(auth.uid).child('active').val() === true && root.child('members').child(auth.uid).child('role').val() === 'operational' && root.child('members').child(auth.uid).child('location').val() === $location))",
+          "$eventId": {
+            ".write": "auth != null && !data.exists() && newData.exists() && newData.child('actor').val() === auth.uid && newData.child('actorName').val() === root.child('members').child(auth.uid).child('name').val() && newData.child('createdAt').isNumber() && newData.child('createdAt').val() <= now && newData.child('createdAt').val() >= now - 120000 && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || (root.child('members').child(auth.uid).child('active').val() === true && root.child('members').child(auth.uid).child('role').val() === 'operational' && ((newData.child('type').val() === 'transfer' && newData.child('payload').child('fromLocationId').val() === root.child('members').child(auth.uid).child('location').val() && ($location === newData.child('payload').child('fromLocationId').val() || $location === newData.child('payload').child('toLocationId').val())) || (newData.child('type').val() !== 'transfer' && $location === root.child('members').child(auth.uid).child('location').val() && newData.child('payload').child('locationId').val() === $location)) && (newData.child('type').val() === 'purchase' || newData.child('type').val() === 'transfer' || newData.child('type').val() === 'production' || newData.child('type').val() === 'sales_delivery' || newData.child('type').val() === 'sales_settlement' || newData.child('type').val() === 'customer_return' || newData.child('type').val() === 'expense_request' || newData.child('type').val() === 'asset_acquire' || newData.child('type').val() === 'journal')))",
+            ".validate": "newData.hasChildren(['actor', 'actorName', 'type', 'date', 'createdAt', 'payload']) && newData.child('actor').isString() && newData.child('actorName').isString() && newData.child('actorName').val().length > 0 && newData.child('actorName').val().length <= 100 && newData.child('type').isString() && (newData.child('type').val() === 'purchase' || newData.child('type').val() === 'transfer' || newData.child('type').val() === 'production' || newData.child('type').val() === 'sales_delivery' || newData.child('type').val() === 'sales_settlement' || newData.child('type').val() === 'customer_return' || newData.child('type').val() === 'expense_request' || newData.child('type').val() === 'expense_review' || newData.child('type').val() === 'expense_payment' || newData.child('type').val() === 'stock_adjustment' || newData.child('type').val() === 'asset_acquire' || newData.child('type').val() === 'asset_depreciation' || newData.child('type').val() === 'journal' || newData.child('type').val() === 'payroll_cost') && newData.child('date').isString() && newData.child('createdAt').isNumber() && newData.child('payload').exists() && (newData.child('type').val() === 'transfer' ? (newData.child('payload').child('fromLocationId').isString() && newData.child('payload').child('toLocationId').isString() && newData.child('payload').child('fromLocationId').val() !== newData.child('payload').child('toLocationId').val() && ($location === newData.child('payload').child('fromLocationId').val() || $location === newData.child('payload').child('toLocationId').val()) && newData.child('payload').child('quantity').isNumber() && newData.child('payload').child('quantity').val() > 0) : newData.child('payload').child('locationId').val() === $location) && (newData.child('type').val() === 'purchase' ? (newData.child('payload').child('quantity').isNumber() && newData.child('payload').child('quantity').val() > 0 && newData.child('payload').child('totalCostPaisa').isNumber() && newData.child('payload').child('totalCostPaisa').val() >= 0) : (newData.child('type').val() === 'stock_adjustment' ? (newData.child('payload').child('delta').isNumber() && newData.child('payload').child('delta').val() !== 0) : (newData.child('type').val() === 'production' ? (newData.child('payload').child('inputQuantity').isNumber() && newData.child('payload').child('inputQuantity').val() > 0 && newData.child('payload').child('outputQuantity').isNumber() && newData.child('payload').child('outputQuantity').val() > 0) : (newData.child('type').val() === 'sales_delivery' ? (newData.child('payload').child('quantity').isNumber() && newData.child('payload').child('quantity').val() > 0) : (newData.child('type').val() === 'sales_settlement' ? (newData.child('payload').child('soldQuantity').isNumber() && newData.child('payload').child('soldQuantity').val() >= 0 && newData.child('payload').child('returnedQuantity').isNumber() && newData.child('payload').child('returnedQuantity').val() >= 0) : (newData.child('type').val() === 'expense_request' || newData.child('type').val() === 'expense_payment' || newData.child('type').val() === 'asset_acquire' || newData.child('type').val() === 'asset_depreciation' || newData.child('type').val() === 'journal' || newData.child('type').val() === 'payroll_cost' ? (newData.child('payload').child('amountPaisa').isNumber() || newData.child('payload').child('costPaisa').isNumber()) : true))))))",
+            "$other": { ".validate": false }
+          }
+        }
+      },
+      "attendance": {
+        ".read": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2'",
+        "$uid": {
+          ".read": "auth != null && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || (auth.uid === $uid && root.child('members').child(auth.uid).child('active').val() === true))",
+          "$eventId": {
+            ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.exists() && newData.child('createdAt').isNumber() && newData.child('createdAt').val() <= now && newData.child('createdAt').val() >= now - 120000 && root.child('members').child(auth.uid).child('active').val() === true && root.child('members').child(auth.uid).child('role').val() === 'operational'",
+            ".validate": "newData.hasChildren(['uid', 'name', 'kind', 'latitude', 'longitude', 'accuracy', 'createdAt']) && newData.child('uid').val() === $uid && newData.child('name').isString() && newData.child('name').val() === root.child('members').child($uid).child('name').val() && newData.child('kind').isString() && (newData.child('kind').val() === 'চেক-ইন' || newData.child('kind').val() === 'চেক-আউট' || newData.child('kind').val() === 'GPS আপডেট') && newData.child('latitude').isNumber() && newData.child('latitude').val() >= -90 && newData.child('latitude').val() <= 90 && newData.child('longitude').isNumber() && newData.child('longitude').val() >= -180 && newData.child('longitude').val() <= 180 && newData.child('accuracy').isNumber() && newData.child('accuracy').val() >= 0 && newData.child('accuracy').val() <= 10000 && newData.child('createdAt').isNumber() && (newData.child('kind').val() === 'GPS আপডেট' ? !newData.child('photo').exists() : (newData.child('photo').isString() && newData.child('photo').val().length <= 140000))",
+            "$other": { ".validate": false }
+          }
+        }
+      },
+      "leaves": {
+        ".read": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2'",
+        "$uid": {
+          ".read": "auth != null && (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' || (auth.uid === $uid && root.child('members').child(auth.uid).child('active').val() === true))",
+          "$leaveId": {
+            ".write": "auth != null && ((auth.uid === $uid && !data.exists() && newData.exists() && root.child('members').child(auth.uid).child('active').val() === true && newData.child('uid').val() === auth.uid && newData.child('status').val() === 'pending') || (auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && data.exists() && newData.exists() && newData.child('uid').val() === data.child('uid').val() && newData.child('startDate').val() === data.child('startDate').val() && newData.child('endDate').val() === data.child('endDate').val() && newData.child('reason').val() === data.child('reason').val() && data.child('status').val() === 'pending' && (newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected') && newData.child('reviewedBy').val() === auth.uid && newData.child('reviewedAt').isNumber()))",
+            ".validate": "newData.hasChildren(['uid', 'name', 'type', 'startDate', 'endDate', 'reason', 'status', 'createdAt']) && newData.child('uid').val() === $uid && newData.child('name').isString() && newData.child('type').isString() && newData.child('startDate').isString() && newData.child('endDate').isString() && newData.child('reason').isString() && newData.child('status').isString() && (newData.child('status').val() === 'pending' || newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected') && newData.child('createdAt').isNumber()",
+            "$other": { ".validate": true }
+          }
+        }
+      },
+      "private": {
+        "payroll": {
+          ".read": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2'",
+          "salaries": {
+            "$id": {
+              ".write": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && newData.exists()",
+              ".validate": "newData.hasChildren(['employeeUid', 'month', 'monthlySalaryPaisa', 'createdAt', 'createdBy']) && newData.child('employeeUid').isString() && newData.child('month').isString() && newData.child('monthlySalaryPaisa').isNumber() && newData.child('monthlySalaryPaisa').val() >= 0 && newData.child('createdAt').isNumber() && newData.child('createdBy').val() === auth.uid"
+            }
+          },
+          "runs": {
+            "$id": {
+              ".write": "auth != null && auth.uid === 'd9UNgMBw3bRRDEc2nSc95NF90Gg2' && !data.exists() && newData.exists()",
+              ".validate": "newData.hasChildren(['employeeUid', 'month', 'amountPaisa', 'createdAt', 'createdBy']) && newData.child('employeeUid').isString() && newData.child('month').isString() && newData.child('amountPaisa').isNumber() && newData.child('amountPaisa').val() >= 0 && newData.child('createdAt').isNumber() && newData.child('createdBy').val() === auth.uid"
+            }
+          }
+        }
+      }
+    }
+  }
+}
